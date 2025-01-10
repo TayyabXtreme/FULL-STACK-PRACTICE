@@ -2,10 +2,15 @@ const dotenv=require('dotenv')
 const express=require('express')
 dotenv.config()
 const app=express()
-
+const connectedToDB=require('./config/db')
+const router=require('./routes/user.routes')
+connectedToDB()
 app.get('/',(req,res)=>{
     res.send('Hello World')
 })
+
+app.use('/user',router)
+
 
 app.listen(process.env.PORT,()=>{
     console.log("Connected to Port 3000")
