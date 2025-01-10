@@ -39,4 +39,49 @@ const registerUser = async (username, email, password) => {
   }
 };
 
-module.exports = { registerUser };
+
+const loginUser=async(email,password,bcrypt)=>{
+  try{
+    const findUser=await userModel.findOne({email})
+    if(!findUser){
+      return {
+        success:false,
+        status:400,
+        message: "username or credendial is incorrect.",
+      }}
+      const isMatch=await bcrypt.compare(password,findUser.password);
+          if(!isMatch){
+            return {
+              success:false,
+              status:400,
+              message: "username or credendial is incorrect.",
+            }
+          }else{
+            return {
+              success:true,
+              status:201,
+              message:"user register successfully",
+              user: {
+                id: findUser._id,
+                username: findUser.username,
+                email: findUser.email,
+              },
+            }
+          }
+    
+    
+    
+
+  }catch(error){
+    console.log("Error during Login",error)
+    
+    return {
+      success:false,
+      status:500,
+      message:"An error occured during user login. Please try again"
+    }
+  }
+
+}
+
+module.exports = { registerUser ,loginUser};
