@@ -11,7 +11,7 @@ const registerUser = async (username, email, password) => {
       };
     }
 
-    // Create the new user
+    
     const newUser = await userModel.create({
       username,
       email,

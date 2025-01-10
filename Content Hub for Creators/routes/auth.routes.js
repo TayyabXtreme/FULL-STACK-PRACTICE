@@ -3,13 +3,15 @@ const {validationResult } = require('express-validator');
 const router=express.Router();
 const {registerUser}=require('../controller/auth.controller')
 const validateRegister=require('../middleware/register.validation')
-
+const jwt=require('jsonwebtoken')
+const bcrypt=require('bcrypt')
 router.post("/register", 
  validateRegister,
   
-  
+ 
   async (req, res) => {
     const { username, email, password } = req.body;
+
     const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log("Validation Errors:", errors.array());
@@ -18,13 +20,31 @@ router.post("/register",
       message: "Validation failed. Check your input.",
     });
   }
-    const result = await registerUser(username, email, password);
+  const hasedPassword=await bcrypt.hash(password,10)
+    const result = await registerUser(username, email, hasedPassword);
+    if(result.success){
+      
+      const token=jwt.sign({
+        userID:result.user._id,
+        email:result.user.email,
+        username:result.user.username
+
+
+        
+    },process.env.JWT_SECRET);
+
+    res.cookie('chtoken',token)
+    }
     return res.status(result.status).json({
       success: result.success,
       message: result.message,
-      user: result.user || null, // Only include user if it exists
+      user: result.user || null, 
     });
   });
 
+
+  router.get('/login',(req,res)=>{
+    res.send('hello login')
+  })
 
 module.exports=router

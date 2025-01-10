@@ -24,7 +24,7 @@ const userSchema=new mongoose.Schema(
             required:true,
             trim:true,
             minLength:[6,"password must be atleast 6 charachter long"],
-            maxLength:[14,"username must be almost 14 character long "]
+            
             
         },
         bio:{
