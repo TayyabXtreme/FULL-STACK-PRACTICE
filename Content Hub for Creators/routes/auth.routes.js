@@ -75,4 +75,18 @@ router.post("/register",
   });
   })
 
+  router.get('/checkauth', (req, res) => {
+    const token = req.cookies.chtoken; // Use 'chtoken' as per the `res.cookie` call
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: Token not found' });
+    }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return res.status(200).json({ message: 'Authorized', user: decoded });
+    } catch (error) {
+        return res.status(401).json({ message: 'Unauthorized: Invalid or expired token' });
+    }
+});
+
+
 module.exports=router
