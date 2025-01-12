@@ -6,7 +6,7 @@ export const register=async(req,res)=>{
     try {
         const {fullName,email,password}=req.body
         if(!fullName || !email || !password){
-            return res.status(403).json({
+            return res.status(400).json({
                 success:false,
                 message:"All the field are required"
             })
@@ -42,14 +42,14 @@ export const login=async(req,res)=>{
        
         const {email,password}=req.body
         if( !email || !password){
-            return res.status(403).json({
+            return res.status(400).json({
                 success:false,
                 message:"All the field are required"
             })
         }
         const user=await User.findOne({email});
         if(!user){
-            return res.status(403).json({
+            return res.status(400).json({
                 success:false,
                 message:"Incorrect email or password"
             }) 
@@ -57,7 +57,7 @@ export const login=async(req,res)=>{
 
         const checkPassword=await bcrypt.compare(password,user.password)
         if(!checkPassword){
-            return res.status(403).json({
+            return res.status(400).json({
                 success:false,
                 message:"Incorrect email or password"
             }) 
