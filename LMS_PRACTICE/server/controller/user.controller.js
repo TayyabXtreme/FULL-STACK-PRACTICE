@@ -6,14 +6,14 @@ export const register=async(req,res)=>{
     try{
         const {name,email,password}=req.body
         if(!name || !email || !password){
-            return res.statis(400).json({
+            return res.status(400).json({
                 success:false,
                 message:'All filds are required'
             })
         }
         const user=await User.findOne({email})
         if(user){
-            return res.statis(400).json({
+            return res.status(400).json({
                 success:false,
                 message:'this email is already exist'
             })
@@ -23,7 +23,7 @@ export const register=async(req,res)=>{
 
 
         await User.create({
-            name,email,hasedPassword
+            name,email,password:hasedPassword
         })
 
         return res.status(201).json({
@@ -32,7 +32,7 @@ export const register=async(req,res)=>{
         })
 
     }catch(error){
-        console.log('SOME WENT WRONG IN SERVER',e)
+        console.log('SOME WENT WRONG IN SERVER',error)
         return res.status(500).json({
             success:false,
             message:'Failed to Register'
@@ -45,17 +45,17 @@ export const register=async(req,res)=>{
 export const login=async(req,res)=>{
 
     try {
-        const {name,email,password}=req.body
+        const {email,password}=req.body
 
         if(!email || !password){
-            return res.statis(400).json({
+            return res.status(400).json({
                 success:false,
                 message:'All filds are required'
             })
         }
         const user=await User.findOne({email})
         if(!user){
-            return res.statis(400).json({
+            return res.status(400).json({
                 success:false,
                 message:'Incorrect email or password'
             })
@@ -64,7 +64,7 @@ export const login=async(req,res)=>{
         const isPasswordMatch=await bcrypt.compare(password,user.password)
 
         if(!isPasswordMatch){
-            return res.statis(400).json({
+            return res.status(400).json({
                 success:false,
                 message:'Incorrect email or password'
             })
@@ -79,7 +79,7 @@ export const login=async(req,res)=>{
         
         
     } catch (error) {
-        console.log('SOME WENT WRONG IN SERVER',e)
+        console.log('SOME WENT WRONG IN SERVER',error)
         return res.status(500).json({
             success:false,
             message:'Failed to Register'
