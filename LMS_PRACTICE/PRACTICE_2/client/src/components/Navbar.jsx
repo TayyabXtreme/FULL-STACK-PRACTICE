@@ -127,7 +127,7 @@ const MobileNavbar=()=>{
 
         <Sheet>
         <SheetTrigger asChild>
-          <Button size='icon' classNamer='rounded-full bg-gray-200 hover:bg-gray-200' variant="outline">
+          <Button size='icon' className='rounded-full bg-gray-200 hover:bg-gray-200' variant="outline">
 
         <Menu/>
 
