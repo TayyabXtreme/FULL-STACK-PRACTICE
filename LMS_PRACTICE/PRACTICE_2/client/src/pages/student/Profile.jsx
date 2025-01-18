@@ -52,9 +52,9 @@ const Profile = () => {
 
     // Conditional Rendering
     if (isLoading) return <ProfileSkeleton />;
-    if (error) return <h1 className="text-3xl my-24 pl-24 font-bold text-black">SERVER ERROR</h1>;
+    // if (error) return <h1 className="text-3xl my-24 pl-24 font-bold text-black">SERVER ERROR</h1>;
 
-    const { user } = data;
+    const user = data && data.user;
 
     return (
         <div className="my-24 max-w-4xl mx-auto px-4">
