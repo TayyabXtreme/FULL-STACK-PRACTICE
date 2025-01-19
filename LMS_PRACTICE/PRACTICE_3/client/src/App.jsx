@@ -6,6 +6,7 @@ import HeroSection from './pages/student/HeroSection'
 import { createBrowserRouter } from 'react-router-dom'
 import MainLayout from './MainLayout'
 import { RouterProvider } from 'react-router'
+import Courses from './pages/student/Courses'
 
 const App = () => {
 
@@ -18,6 +19,7 @@ const App = () => {
           path:'/',
           element:<>
           <HeroSection/>
+          <Courses/>
           </>
         },
         {
