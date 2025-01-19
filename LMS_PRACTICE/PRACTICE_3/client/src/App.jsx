@@ -1,12 +1,35 @@
 import React from 'react'
 import { Button } from './components/ui/button'
 import Login from './components/Login'
+import Navbar from './components/Navbar'
+import HeroSection from './pages/student/HeroSection'
+import { createBrowserRouter } from 'react-router-dom'
+import MainLayout from './MainLayout'
+import { RouterProvider } from 'react-router'
 
 const App = () => {
+
+  const appRouter=createBrowserRouter([
+    {
+      path:'/',
+      element:<MainLayout/>,
+      children:[
+        {
+          path:'/',
+          element:<>
+          <HeroSection/>
+          </>
+        },
+        {
+          path:'/login',
+          element:<Login/>
+        }
+      ]
+    }
+  ])
+
   return (
-    <main>
-      <Login/>
-    </main>
+   <RouterProvider router={appRouter} />
   )
 }
 
