@@ -135,7 +135,7 @@ export const getUserProfile=async(req,res)=>{
 export const updateProfile=async(req,res)=>{
     try {
         const userId=req.id;
-        const name="tayyab";
+        const {name}=req.body
         const profilePhoto=req.file;
         console.log(profilePhoto)
         if(!profilePhoto || !name  ){
@@ -153,9 +153,14 @@ export const updateProfile=async(req,res)=>{
 
         }
         //
-        if(user.photoUrl){
-            const publicId=user.photoUrl.split('/').pop().split('.')[0];//extract public id
+        if (user.photoUrl) {
+            // Extract publicId from the URL
+            const publicId = user.photoUrl.split('/').pop().split('.')[0];
+        
+            // Call the delete function
             deleteMediaFromCloudinary(publicId)
+                .then(() => console.log('Media deleted successfully'))
+                .catch((error) => console.error('Failed to delete media:', error));
         }
 
         const cloudResponse=await uploadMedia(profilePhoto.path)

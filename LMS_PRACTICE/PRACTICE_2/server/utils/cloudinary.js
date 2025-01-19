@@ -23,14 +23,16 @@ export const uploadMedia=async(file)=>{
 }
 
 
-export const deleteMediaFromCloudinary=async(publicId)=>{
+export const deleteMediaFromCloudinary = async (publicId) => {
     try {
-        await cloudinary.uploader.destroy(publicId)
-        
+        const response = await cloudinary.uploader.destroy(publicId);
+        console.log('Cloudinary delete response:', response); // Optional: log the response for debugging
+        return response;
     } catch (error) {
-        console.log(error)
+        console.error('Error deleting media from Cloudinary:', error);
+        throw error; // Re-throw the error if needed for further handling
     }
-}
+};
 
 export const deleteVideoFromCloudinary=async(publicId)=>{
     try {
