@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-
+import {User} from '../models/user.model.js'
 const isAuthenticated = async (req, res, next) => {
     try {
         const token = req.cookies.token
@@ -17,7 +17,16 @@ const isAuthenticated = async (req, res, next) => {
             })
         }
 
-        req.id = decode.userId
+        
+        const userExist=await User.findById(decode.userId)
+               if(!userExist){
+                return res.status(401).json({
+                    success: false,
+                    message: 'user not exist'
+                })
+               }
+               req.id = decode.userId
+
         next()
 
     } catch (error) {
