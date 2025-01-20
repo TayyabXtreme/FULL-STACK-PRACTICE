@@ -7,13 +7,59 @@ import { Loader2 } from 'lucide-react'
 
 
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Course from './Course'
+import { useLoadUserQuery, useUpdateUserMutation } from '@/features/api/authApi'
+import { toast } from 'sonner'
 
 const Profile = () => {
-    const isLoading=false
+    const [name,setName]=useState('')
+    const [profilePhoto,setProfilePhoto]=useState('')
     const enrolledCourses=[23,24]
+    const {data,isLoading,error,refetch}=useLoadUserQuery()
+    const [updateUser,{data:updateData,isLoading:updateIsLoading,isError,error:updateError,isSuccess}]=useUpdateUserMutation()
+    console.log(data)
 
+   
+
+    const onChangeHandler=(e)=>{
+        const file=e.target.files?.[0]
+        if(file){
+            setProfilePhoto(file)
+        }
+    }
+
+    const updateUserHandler=async()=>{
+        const formData=new FormData();
+        formData.append('name',name)
+        formData.append('profilePhoto',profilePhoto)
+        await updateUser(formData)
+
+    }
+
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log(updateData)
+          toast.success(updateData?.message || 'User updated successfully');
+          refetch();
+        }
+    
+        if (isError) {
+          
+          toast.error(updateError.data.message || 'Profile not updated. Try again later.');
+        }
+      }, [isSuccess, updateError, updateData, refetch]);
+
+    if(isLoading){
+        return <ProfileSkeleton/>
+
+    }
+
+    if(error){
+        return <h1 className='text-3xl font-extrabold text-center my-28'>Page does not exist</h1>
+
+    }
 
 
   return (
@@ -24,27 +70,27 @@ const Profile = () => {
             <div className='flex flex-col md:flex-row items-center  md:items-start gap-8 my-5'> 
                 <div className='flex flex-col items-center mb-4'>
                      <Avatar className='h-24 w-24 md:h-32 md:w-32'>
-                                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                         <AvatarFallback>CN</AvatarFallback>
+                                         <AvatarImage src={data.user.photoUrl} alt="@shadcn" />
+                                         <AvatarFallback>{data.user.name[0].toUpperCase()}</AvatarFallback>
                                    </Avatar>
                 </div>
 
                 <div className='flex flex-col items-start'>
                     <div>
                         <h1 className='font-semibold text-gray-900 dark:text-gray-300' >
-                            Name: <span className='font-normal text-gray-700 dark:text-gray-300 ml-2' >Tayyab Xtrem</span>
+                            Name: <span className='font-normal text-gray-700 dark:text-gray-300 ml-2' >{data.user.name}</span>
                         </h1>
 
                     </div>
                     <div>
                         <h1 className='font-semibold text-gray-900 dark:text-gray-300' >
-                            Email: <span className='font-normal text-gray-700 dark:text-gray-300 ml-2' >test@mail.com</span>
+                            Email: <span className='font-normal text-gray-700 dark:text-gray-300 ml-2' >{data.user.email}</span>
                         </h1>
 
                     </div>
                     <div>
                         <h1 className='font-semibold text-gray-900 dark:text-gray-300' >
-                            role: <span className='font-normal text-gray-700 dark:text-gray-300 ml-2' >Instructor</span>
+                            role: <span className='font-normal text-gray-700 dark:text-gray-300 ml-2' >{data.user.role}</span>
                         </h1>
 
                     </div>
@@ -63,23 +109,30 @@ const Profile = () => {
                             <div className='gap-4 py-4 grid'>
                                 <div className='grid grid-cols-4 items-center gap-4'>
                                         <Label>Name</Label>
-                                        <Input  type='text' placeholder='Name' className='col-span-3' />
+                                        <Input  
+                                        value={name}
+                                        onChange={(e)=>setName(e.target.value)}
+                                        type='text' placeholder='Name' className='col-span-3' />
                                         
 
                                 </div>
                                 <div className='grid grid-cols-4 items-center gap-4'>
                                         <Label>Profile Photo</Label>
-                                        <Input  type='file' accept='image/*' className='col-span-3' />
+                                        <Input 
+                                        onChange={(e)=>{onChangeHandler(e)}}
+                                        type='file' accept='image/*' className='col-span-3' />
                                         
 
                                 </div>
 
                             </div>
                             <DialogFooter>
-                               <Button disabled={isLoading} >
+                               <Button disabled={updateIsLoading}
+                               onClick={updateUserHandler}
+                               >
                                  {
                                  
-                                isLoading ?<> <Loader2 className='animate-spin' /> Please wait </> :'Save Changes'
+                                 updateIsLoading ?<> <Loader2 className='animate-spin' /> Please wait </> :'Save Changes'
                                  
                                  }
                                </Button>
@@ -114,3 +167,55 @@ const Profile = () => {
 export default Profile
 
 
+const ProfileSkeleton=()=>{
+    return (
+        <div className="container mx-auto p-6 max-w-4xl">
+  <h1 className="text-2xl font-bold text-center md:text-left mb-6">Profile</h1>
+  
+  <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+    {/* Avatar Section */}
+    <div className="flex flex-col items-center">
+      <div className="rounded-full h-24 w-24 md:h-32 md:w-32 bg-gray-200 mb-4">
+        {/* Replace with Avatar component */}
+      </div>
+    </div>
+    
+    {/* Profile Info Section */}
+    <div className="w-full">
+      <div className="mb-4">
+        <h2 className="font-semibold text-gray-900">
+          Name: <span className="font-normal text-gray-700 ml-2">Your Name</span>
+        </h2>
+      </div>
+      <div className="mb-4">
+        <h2 className="font-semibold text-gray-900">
+          Email: <span className="font-normal text-gray-700 ml-2">your.email@example.com</span>
+        </h2>
+      </div>
+      <div className="mb-4">
+        <h2 className="font-semibold text-gray-900">
+          Role: <span className="font-normal text-gray-700 ml-2">Your Role</span>
+        </h2>
+      </div>
+      
+      {/* Edit Profile Button */}
+      <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Edit Profile
+      </button>
+    </div>
+  </div>
+  
+  {/* Enrolled Courses Section */}
+  <div>
+    <h2 className="font-medium text-lg mb-4">Courses You're Enrolled In</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {/* Replace with dynamic courses */}
+      <div className="p-4 border rounded shadow-md">
+        <h3 className="font-semibold">Course Title</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+    )
+}
