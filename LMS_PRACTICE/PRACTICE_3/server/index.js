@@ -5,7 +5,9 @@ import { ConnectDB } from './Database/db.js'
 import userRouter from './routes/user.routes.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import courseRoute from './routes/course.routes.js'
 import cors from 'cors'
+
 const app=express()
 
 const PORT=process.env.PORT
@@ -20,6 +22,7 @@ app.use(cors({
 
 }))
 app.use('/api/v1/user',userRouter)
+app.use('/api/v1/course',courseRoute)
 
 app.listen(PORT,()=>{
     console.log(`SERVER IS LISTINING AT PORT ${PORT}`)
