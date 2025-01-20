@@ -35,10 +35,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Separator } from './ui/separator'
+import { Link } from 'react-router-dom'
+
 
 
 const Navbar = () => {
-    const user = false
+    const user = true
+    
     
     return (
         <div className='px-4 h-16 dark:bg-[#0a0a0a] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 right-0 left-0 duration-300 z-10'>
@@ -66,12 +69,14 @@ const Navbar = () => {
                                     <DropdownMenuSeparator />
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem>
+                                            <Link to='/my-learning'>
                                             My Learning
-
+                                        </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem>
+                                        <Link to='/profile'>
                                             Edit Profile
-
+                                        </Link>
                                         </DropdownMenuItem>
 
                                         <DropdownMenuItem>
@@ -134,8 +139,16 @@ const MobileNavbar=()=>{
           </SheetHeader>
           <Separator />
           <nav className='flex flex-col space-y-4'>
-            <span>My Learning</span>
-            <span>Edit profile</span>
+            <span>
+            <Link to='/my-learning'>
+                My Learning
+              </Link>  
+                </span>
+            <span>
+            <Link to='/profile'>
+                Edit profile
+            </Link>
+                </span>
             <span>Logout</span>
           </nav>
           {
