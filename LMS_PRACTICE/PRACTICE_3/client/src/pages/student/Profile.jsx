@@ -13,12 +13,13 @@ import { useLoadUserQuery, useUpdateUserMutation } from '@/features/api/authApi'
 import { toast } from 'sonner'
 
 const Profile = () => {
-    const [name,setName]=useState('')
+    
     const [profilePhoto,setProfilePhoto]=useState('')
     const enrolledCourses=[23,24]
     const {data,isLoading,error,refetch}=useLoadUserQuery()
+    const [name,setName]=useState(data  ?  data.user.name : '')
     const [updateUser,{data:updateData,isLoading:updateIsLoading,isError,error:updateError,isSuccess}]=useUpdateUserMutation()
-    console.log(data)
+    
 
    
 
@@ -40,7 +41,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            console.log(updateData)
+           
           toast.success(updateData?.message || 'User updated successfully');
           refetch();
         }
@@ -50,6 +51,10 @@ const Profile = () => {
           toast.error(updateError.data.message || 'Profile not updated. Try again later.');
         }
       }, [isSuccess, updateError, updateData, refetch]);
+
+      useEffect(()=>{
+        refetch()
+      },[])
 
     if(isLoading){
         return <ProfileSkeleton/>

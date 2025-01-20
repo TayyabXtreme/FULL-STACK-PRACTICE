@@ -36,19 +36,23 @@ const Login = () => {
     }
   
     if (registerIsSuccess && registerData) {
+      
       toast.success(registerData.message);
     }
   
     if (registerError) {
-      console.log(registerError.data?.message);
+      
+      
       toast.error(registerError.data?.message || 'Failed to register');
     }
   
     if (loginError) {
-      console.log("login",loginError.data.message);
+     
       toast.error(loginError.data.message || 'Failed to login');
     }
   }, [registerData, loginData, registerError, loginError, loginIsSuccess, registerIsSuccess])
+
+
     const [loginInput, setLoginInput] = useState({
         email:'',
         password:''
@@ -74,7 +78,7 @@ const Login = () => {
     const handleRegistration=async(type)=>{
       
        const inputData= type =='singup' ? signUpInput : loginInput
-       console.log(inputData)
+      
        const action =type ==='singup' ?registerUser : loginUser
       await action(inputData)
     }

@@ -81,7 +81,7 @@ const Navbar = () => {
                                 <DropdownMenuTrigger asChild>
                                     <Avatar>
                                         <AvatarImage src={user.photoUrl} alt="@shadcn" />
-                                        <AvatarFallback>CN</AvatarFallback>
+                                        <AvatarFallback>{user.name[0].toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56">
@@ -112,7 +112,7 @@ const Navbar = () => {
                                                 <DropdownMenuSeparator />
 
 
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem  onClick={()=>naviagate('/admin')}>
                                                     Dashboard
 
                                                 </DropdownMenuItem>
@@ -147,7 +147,7 @@ const Navbar = () => {
             {/* //mobile devices */}
             <div className='flex md:hidden items-center justify-between px-4 h-full'>
                 <h1 className='font-extrabold text-2xl'>E_Learning</h1>
-                <MobileNavbar logoutHandler={logoutHandler} />
+                <MobileNavbar logoutHandler={logoutHandler} navigator={naviagate} />
             </div>
 
 
@@ -158,7 +158,7 @@ const Navbar = () => {
 export default Navbar
 
 
-const MobileNavbar = ({ logoutHandler }) => {
+const MobileNavbar = ({ logoutHandler ,navigator}) => {
     const role = 'instructor'
     return (
         <Sheet>
@@ -190,7 +190,9 @@ const MobileNavbar = ({ logoutHandler }) => {
                     role == 'instructor' ? (
                         <SheetFooter>
                             <SheetClose asChild>
-                                <Button type="submit" className='w-full'>Dashboard</Button>
+                                <Button type="submit" className='w-full'
+                                onClick={()=>navigator('/admin')}
+                                >Dashboard</Button>
                             </SheetClose>
                         </SheetFooter>
                     ) : ''
