@@ -6,6 +6,7 @@ import userRouter from './routes/user.routes.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import courseRoute from './routes/course.routes.js'
+import mediaRoute from './routes/media.routes.js'
 import cors from 'cors'
 
 const app=express()
@@ -21,6 +22,7 @@ app.use(cors({
     credentials:true
 
 }))
+app.use('/api/v1/media',mediaRoute)
 app.use('/api/v1/user',userRouter)
 app.use('/api/v1/course',courseRoute)
 
