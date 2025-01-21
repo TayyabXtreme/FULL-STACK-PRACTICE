@@ -18,22 +18,8 @@ import { Badge } from '@/components/ui/badge'
 const CourseTable = () => {
 
     const {data,isLoading,error}=useGetCreatorCourseQuery()
-    console.log(data)
-    const invoices = [
-        {
-          invoice: "INV001",
-          paymentStatus: "Paid",
-          totalAmount: "$250.00",
-          paymentMethod: "Credit Card",
-        },
-        {
-          invoice: "INV002",
-          paymentStatus: "Pending",
-          totalAmount: "$150.00",
-          paymentMethod: "PayPal",
-        },
-        
-      ]
+  
+    
       const navigate=useNavigate()
 
       if(isLoading){
@@ -60,10 +46,10 @@ const CourseTable = () => {
         {data && data?.courses.map((course) => (
           <TableRow key={course._id}>
             <TableCell>{course?.courseTitle}</TableCell>
-            <TableCell>{course?.price || 'NA'  }</TableCell>
+            <TableCell>{course?.coursePrice || 'NA'  }</TableCell>
            
             <TableCell className="font-medium text-black">
-                <Badge> {course.isPublished  ? 'Published' :'Draft' }</Badge>
+                <Badge> {course.isPublished ? "Published" : "Draft"}</Badge>
                </TableCell>
             <TableCell className="text-right"><Button size='sm' variant='ghost'
             onClick={()=>navigate(`${course._id}`)}
