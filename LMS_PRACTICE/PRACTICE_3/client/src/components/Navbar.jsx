@@ -69,7 +69,9 @@ const Navbar = () => {
             <div className='md:flex max-w-7xl mx-auto hidden justify-between items-center gap-10 h-full'>
                 <div className='flex items-center gap-2'>
                     <School size={'30'} />
-                    <h1 className='hidden md:block font-extrabold text-2xl' >E_Learning</h1>
+                    <Link to='/'>
+                    <h1 className='hidden md:block font-extrabold text-2xl cursor-pointer hover:animate-pulse' >E_Learning</h1>
+                    </Link>
                 </div>
 
 
@@ -169,7 +171,11 @@ const MobileNavbar = ({ logoutHandler ,navigator}) => {
             </SheetTrigger>
             <SheetContent className='flex flex-col'>
                 <SheetHeader className={'flex flex-row items-center justify-between mt-4'}>
-                    <SheetTitle>E_Learning</SheetTitle>
+                    <SheetTitle>
+                        <Link to='/'>
+                        E_Learning
+                        </Link>
+                        </SheetTitle>
                     <DarkMode />
                 </SheetHeader>
                 <Separator />

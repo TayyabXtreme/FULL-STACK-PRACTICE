@@ -14,6 +14,9 @@ import Dashboard from './pages/admin/Dashboard'
 import CourseTable from './pages/admin/course/CourseTable'
 import AddCourse from './pages/admin/course/AddCourse'
 import EditCourse from './pages/admin/course/EditCourse'
+import CreateLecture from './pages/admin/lecture/createLecture'
+import EditLecture from './pages/admin/lecture/EditLecture'
+import CourseDetail from './pages/student/CourseDetail'
 
 const App = () => {
 
@@ -41,6 +44,10 @@ const App = () => {
           path:'/profile',
           element:<Profile/>
         },
+        {
+          path:'/course-detail/:courseId',
+          element:<CourseDetail/>
+        },
         //admin routes are start from here
         {
           path:'admin',
@@ -62,6 +69,14 @@ const App = () => {
               path:'course/:courseId',
               element:<EditCourse/>
             },
+            {
+              path:'course/:courseId/lecture',
+              element:<CreateLecture/>
+            },
+            {
+              path:'course/:courseId/lecture/:lectureId',
+              element:<EditLecture/>
+            }
             
             
           ]
