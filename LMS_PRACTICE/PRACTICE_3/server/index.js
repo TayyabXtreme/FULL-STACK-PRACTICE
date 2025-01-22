@@ -7,6 +7,8 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import courseRoute from './routes/course.routes.js'
 import mediaRoute from './routes/media.routes.js'
+import purchaseRoute from './routes/purchased.course.routes.js'
+import courseProgressRoute from './routes/course.progress.routes.js'
 import cors from 'cors'
 
 const app=express()
@@ -25,6 +27,9 @@ app.use(cors({
 app.use('/api/v1/media',mediaRoute)
 app.use('/api/v1/user',userRouter)
 app.use('/api/v1/course',courseRoute)
+app.use('/api/v1/purchase',purchaseRoute)
+app.use('/api/v1/progress',courseProgressRoute)
+
 
 app.listen(PORT,()=>{
     console.log(`SERVER IS LISTINING AT PORT ${PORT}`)
