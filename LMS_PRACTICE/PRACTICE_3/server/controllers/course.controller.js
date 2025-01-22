@@ -223,7 +223,7 @@ export const editLecture=async(req,res)=>{
     try {
 
         const {lectureTitle,isPreviewFree,videoInfo}=req.body
-        console.log(isPreviewFree)
+    
         const {courseId,lectureId}=req.params
 
         if (!mongoose.Types.ObjectId.isValid(courseId) || !mongoose.Types.ObjectId.isValid(lectureId)) {
