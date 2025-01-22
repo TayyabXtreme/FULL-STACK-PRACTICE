@@ -1,10 +1,19 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 import Course from './Course'
+import { useGetPublishedCourseQuery } from '@/features/api/courseApi'
 
 const Courses = () => {
-    const courses=[1,34,34,34,342,32,423]
-    const isLoading=false
+    const {data,isLoading,isSuccess,isError}=useGetPublishedCourseQuery()
+    
+    console.log(data)
+
+    if(isError){
+      return <h1>Some Error occured while fetching courses.</h1>
+    }
+
+
+
   return (
     <div className='bg-gray-50 mb-10'>
         <div className='max-w-7xl mx-auto p-6 '>
@@ -16,7 +25,7 @@ const Courses = () => {
             isLoading ? Array.from({length:8}).map((_,index)=>(
                 <CourseSkeleton key={index}/>
             )) : (
-                courses.map((course,index)=><Course key={index} />)
+             data?.courses &&   data.courses.map((course,index)=><Course course={course} key={index} />)
             )
         }
 
