@@ -44,53 +44,59 @@ export const getCourseProgress=async(req,res)=>{
     }
 }
 
-export const updateLectureProgress=async(req,res)=>{
+export const updateLectureProgress = async (req, res) => {
     try {
-        const {courseId,lectureId}=req.params
-        const {userId}=req.id
-
-        //fetch or create course progress
-
-        let courseProgress=await CourseProgress.findOne({courseId,userId})
-        if(!courseProgress){
-            courseProgress= new CourseProgress({
-                userId,
-                courseId,
-                completed:false,
-                lectureProgress:[]
-            })
-            
-        }
-        const lectureIndex=courseProgress.lectureProgress.findIndex((lecture)=>lecture.lectureId===lectureId)
-
-        if(lectureIndex !== -1 ){
-            courseProgress.lectureProgress[lectureIndex].viewed=true
-        }else{
-            courseProgress.lectureProgress.push({
-                lectureId,
-                viewed:true
-            })
-        }
-
-        const lectureProgressLength=courseProgress.lectureProgress.filter((lectureProgress)=>lectureProgress.viewed).length
-        const course=await Course.findById(courseId)
-        if(course.lectures.length === lectureProgressLength){
-            courseProgress.completed=true
-        }
-
-        await courseProgress.save()
-
-        return res.status(200).json({
-            message:'lecture Progress updated successfully'
-        })
-
+      const { courseId, lectureId } = req.params;
+      const userId = req.id;
+  
+      // fetch or create course progress
+      let courseProgress = await CourseProgress.findOne({ courseId, userId });
+  
+      if (!courseProgress) {
+        // If no progress exist, create a new record
+        courseProgress = new CourseProgress({
+          userId,
+          courseId,
+          completed: false,
+          lectureProgress: [],
+        });
+      }
+  
+      // find the lecture progress in the course progress
+      const lectureIndex = courseProgress.lectureProgress.findIndex(
+        (lecture) => lecture.lectureId === lectureId
+      );
+  
+      if (lectureIndex !== -1) {
+        // if lecture already exist, update its status
+        courseProgress.lectureProgress[lectureIndex].viewed = true;
+      } else {
+        // Add new lecture progress
+        courseProgress.lectureProgress.push({
+          lectureId,
+          viewed: true,
+        });
+      }
+  
+      // if all lecture is complete
+      const lectureProgressLength = courseProgress.lectureProgress.filter(
+        (lectureProg) => lectureProg.viewed
+      ).length;
+  
+      const course = await Course.findById(courseId);
+  
+      if (course.lectures.length === lectureProgressLength)
+        courseProgress.completed = true;
+  
+      await courseProgress.save();
+  
+      return res.status(200).json({
+        message: "Lecture progress updated successfully.",
+      });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message:'server error course not update '
-        })
+      console.log(error);
     }
-}
+  };
 
 export const markAsCompleted=async(req,res)=>{
     try {
