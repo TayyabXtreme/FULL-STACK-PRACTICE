@@ -1,10 +1,11 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { useGetCourseProgressQuery } from '@/features/api/courseProgressApi'
-import {CheckCircle2, CirclePlay } from 'lucide-react'
-import React, { useState } from 'react'
+import { useCompleteCourseMutation, useGetCourseProgressQuery, useInCompleteCourseMutation, useUpdateLectureProgressMutation } from '@/features/api/courseProgressApi'
+import {CheckCircle, CheckCircle2, CirclePlay } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const CourseProgress = () => {
   const params=useParams()
@@ -24,6 +25,52 @@ const CourseProgress = () => {
     return progress.some((prog)=>prog.lectureId === lectureId && prog.viewed)
   }
 
+  const [updateLectureProgress]=useUpdateLectureProgressMutation()
+  const [completeCourse,{data:markCompletedData,isSuccess:completedSuccess}]=useCompleteCourseMutation()
+  const [inCompleteCourse,{data:markInCompletedData,isSuccess:IncompletedSuccess}]=useInCompleteCourseMutation()
+
+  
+  
+  
+  const handleSelectLecture=(lecture)=>{
+    setCurrentLecture(lecture)
+    handleLectureProgress(lecture._id)
+  }
+
+  const handleCompleteCourse=async()=>{
+    
+    await completeCourse(courseId);
+  }
+
+  const handleInCompleteCourse=async()=>{
+    
+    await inCompleteCourse(courseId);
+  }
+
+  
+  
+
+  const handleLectureProgress = async (lectureId) => {
+    try {
+      const response = await updateLectureProgress({ courseId, lectureId }).unwrap();
+      console.log('Lecture Progress Update:', response); // Debug the API response
+      refetch(); // Trigger fetching updated progress
+    } catch (error) {
+      console.error('Error updating lecture progress:', error);
+    }
+  }
+  
+  useEffect(()=>{
+    if(completedSuccess && markCompletedData){
+      refetch()
+      toast.success(markCompletedData.message || 'complete')
+    }
+    if(IncompletedSuccess  && markInCompletedData){
+      refetch()
+      toast.success(markInCompletedData.message || 'incomplete')
+    }
+
+  },[completedSuccess,IncompletedSuccess])
 
   if(isLoading) return <p>Loading ...</p>
   if(isError) return <p>Failed to Load course details</p>
@@ -31,21 +78,24 @@ const CourseProgress = () => {
   const initialLecture=currentLecture || courseDetails.lectures && courseDetails.lectures[0]
   const {courseTitle}=courseDetails
 
-  const handleSelectLecture=(lecture)=>{
-    setCurrentLecture(lecture)
-  }
+
 
   return (
     <div className='max-w-7xl mx-auto p-4 mt-20' >
         <div className='flex justify-between mb-4'>
           <h1 className='text-2xl font-bold' >{courseTitle}</h1>
-          <Button>Completed</Button>
+          <Button
+          variant={completed ? 'outline' : 'default'}
+          onClick={completed ? handleInCompleteCourse : handleCompleteCourse}
+          >{ completed ? <div className='flex items-center' > <CheckCircle className='h-4 w-4 mr-2' /> <span>Completed</span> </div> : 'Marks as completed' }</Button>
         </div>
 
         <div  className='flex flex-col md:flex-row gap-6'>
           <div className='flex-1 md:3/5 h-fit rounded-lg shadow-lg p-4'>
           <div>
-          <video src={currentLecture?.videoUrl || initialLecture.videoUrl} 
+          <video 
+          onPlay={()=>handleLectureProgress(currentLecture?._id || initialLecture._id)}
+          src={currentLecture?.videoUrl || initialLecture.videoUrl} 
           controls
           className='w-full min-h-64 max-h-96 md:rounded-lg'
           />
@@ -54,7 +104,7 @@ const CourseProgress = () => {
 
 
           <div>
-            <h3 className='font-medium text-lg' >{`Lecture ${courseDetails.lectures.findIndex((lec)=>lec._id === currentLecture?._id || initialLecture._id )+1}  : ${currentLecture?.lectureTitle || initialLecture?.lectureTitle} `}  </h3>
+            <h3 className='font-medium text-lg' >{`Lecture ${courseDetails.lectures.findIndex((lec)=>lec._id === (currentLecture?._id || initialLecture._id) ) + 1}  : ${currentLecture?.lectureTitle || initialLecture?.lectureTitle} `}  </h3>
           </div>
 
           </div>
@@ -65,7 +115,7 @@ const CourseProgress = () => {
                 return (
                   <Card 
                   onClick={()=>handleSelectLecture(lecture)}
-                  key={lecture._id} className={`mb-3 hover:cursor-pointer transition-transform ${lecture._id === currentLecture?._id ? 'bg-gray-200' : 'dark:bg-gray-800' } `} >
+                  key={lecture._id} className={`mb-3 hover:cursor-pointer transition-transform ${lecture._id === (currentLecture?._id || initialLecture._id) ? 'bg-gray-200' : 'dark:bg-gray-800' } `} >
 
                     <CardContent className='flex items-center justify-between p-4' >
                       <div className='flex items-center' >
