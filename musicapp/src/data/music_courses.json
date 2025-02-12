@@ -1,0 +1,64 @@
+{
+    "courses": [
+        {
+            "id": 1,
+            "title": "Music Theory",
+            "slug": "music-theory",
+            "description": "Learn the basics of music theory",
+            "price": 100,
+            "instructor": "Jane Doe",
+            "isFeatured": true,
+            "image": "/courses/guitar.jpg"
+        },
+        {
+            "id": 2,
+            "title": "Web Development",
+            "slug": "web-development",
+            "description": "Master the fundamentals of web development",
+            "price": 200,
+            "instructor": "John Smith",
+            "isFeatured": false,
+            "image": "/courses/webdev.jpg"
+        },
+        {
+            "id": 3,
+            "title": "Data Science",
+            "slug": "data-science",
+            "description": "An introduction to data science techniques",
+            "price": 250,
+            "instructor": "Alice Johnson",
+            "isFeatured": true,
+            "image": "/courses/datascience.jpg"
+        },
+        {
+            "id": 4,
+            "title": "Graphic Design",
+            "slug": "graphic-design",
+            "description": "Learn the principles of graphic design",
+            "price": 150,
+            "instructor": "Robert Lee",
+            "isFeatured": false,
+            "image": "/courses/graphicdesign.jpg"
+        },
+        {
+            "id": 5,
+            "title": "Music Theory Advanced",
+            "slug": "music-theory advanecd",
+            "description": "Learn the basics of music theory",
+            "price": 100,
+            "instructor": "Jane Doe",
+            "isFeatured": true,
+            "image": "/courses/guitar.jpg"
+        },
+        {
+            "id": 6,
+            "title": "Music Theory",
+            "slug": "music-theory",
+            "description": "Learn the basics of music theory",
+            "price": 100,
+            "instructor": "Jane Doe",
+            "isFeatured": true,
+            "image": "/courses/guitar.jpg"
+        }
+    ]
+}
