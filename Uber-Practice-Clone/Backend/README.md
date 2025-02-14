@@ -149,3 +149,93 @@ The request body should be a JSON object containing the following fields:
 - `200 OK`: The user was successfully logged in.
 - `400 Bad Request`: The request body is invalid or missing required fields.
 - `401 Unauthorized`: The email or password is incorrect.
+
+## /users/profile
+
+### Description
+This endpoint is used to get the profile of the authenticated user.
+
+### Method
+`GET`
+
+### Endpoint
+`/users/profile`
+
+### Request Headers
+The request must include the following headers:
+
+- `Authorization`: A Bearer token containing the JWT token (required)
+
+#### Example
+```
+Authorization: Bearer jwt_token
+```
+
+### Response
+
+#### Success (200 OK)
+```json
+{
+  "user": {
+    "_id": "user_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "socketId": null
+  }
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+### Status Codes
+- `200 OK`: The user's profile was successfully retrieved.
+- `401 Unauthorized`: The request is missing the JWT token or the token is invalid.
+
+## /users/logout
+
+### Description
+This endpoint is used to log out the authenticated user by invalidating the JWT token.
+
+### Method
+`GET`
+
+### Endpoint
+`/users/logout`
+
+### Request Headers
+The request must include the following headers:
+
+- `Authorization`: A Bearer token containing the JWT token (required)
+
+#### Example
+```
+Authorization: Bearer jwt_token
+```
+
+### Response
+
+#### Success (200 OK)
+```json
+{
+  "message": "logout successfully"
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+### Status Codes
+- `200 OK`: The user was successfully logged out.
+- `401 Unauthorized`: The request is missing the JWT token or the token is invalid.
