@@ -31,3 +31,36 @@ module.exports.registerUser=async(req,res,next)=>{
 
 
 }
+
+module.exports.loginUser=async(req,res,next)=>{
+    try {
+        
+    
+        const errors=validationResult(req)
+        if(!errors.isEmpty()){
+            return res.status(400).json({error:errors.array()})
+        }
+
+        const {email,password}=req.body
+
+        const user=await userModel.findOne({email}).select('+password')
+
+        if(!user){
+            return res.status(401).json({message:'invalid email or password'})
+
+        }
+
+        const isMatch=await user.comparePassword(password)
+
+        if(!isMatch){
+            return res.status(401).json({message:'invalid email or password'})
+        }
+
+        const token=user.generateAuthToken();
+
+        res.status(200).json({token,user})
+
+    }catch(e){
+        console.log(`user controller error: ${e}`)
+    }
+}
