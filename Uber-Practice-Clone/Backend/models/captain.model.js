@@ -46,7 +46,7 @@ const captainSchema=new mongoose.Schema({
         plate:{
             type:String,
             required:true,
-            minlength:[3,'Color must be at least 3 character long']
+            minlength:[3,'plate must be at least 3 character long']
             
         },
         capacity:{
@@ -72,7 +72,7 @@ const captainSchema=new mongoose.Schema({
     
 })
 
-captainModel.methods.generateToken=function(){
+captainSchema.methods.generateAuthToken=function(){
 const token=jwt.sign({_id:this._id},process.env.JWT_SECRET,{expiresIn:'24h'})
 return token
 
@@ -80,13 +80,16 @@ return token
 
 
 
-captainModel.methods.comparePassword=async function(password) {
+captainSchema.methods.comparedPassword=async function(password) {
     return await bcrypt.compare(password,this.password)
     
 }
 
-captainModel.statics.hasedPassword=async function(password){
+captainSchema.statics.hasedPassword=async function(password){
     return await bcrypt.hash(password,10);
 }
 
 const captainModel=mongoose.model('captain',captainSchema)
+
+
+module.exports=captainModel
