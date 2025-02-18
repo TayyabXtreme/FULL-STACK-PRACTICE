@@ -12,11 +12,15 @@ const cookieParser=require('cookie-parser')
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
-app.use(cors())
-app.use('/users',userRoutes)
-app.use('/captains',captainRoutes)
-app.get('/',(req,res)=>{
-    res.send('HEllo World')
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+
+app.use('/users', userRoutes);
+app.use('/captains', captainRoutes);
+app.get('/', (req, res) => {
+    res.send('Hello World');
 });
 
-module.exports=app;
+module.exports = app;
