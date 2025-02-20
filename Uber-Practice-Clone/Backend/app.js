@@ -6,6 +6,7 @@ const app=express()
 
 const userRoutes=require('./routes/user.routes')
 const captainRoutes=require('./routes/captain.routes')
+const mapsRoutes=require('./routes/maps.routes')
 const connectToDb=require('./db/dbconnect')
 const cookieParser=require('cookie-parser')
  connectToDb()
@@ -19,6 +20,7 @@ app.use(cors({
 
 app.use('/users', userRoutes);
 app.use('/captains', captainRoutes);
+app.use('/maps', mapsRoutes);
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
