@@ -14,6 +14,8 @@ import CaptainHome from './pages/CaptainHome'
 import CaptainProtectWrapper from './pages/CaptainProtectWrapper'
 import CaptainLogut from './pages/CaptainLogut'
 import Ridding from './pages/Ridding'
+import CaptainRiding from './pages/CaptainRiding'
+import 'remixicon/fonts/remixicon.css'
 
 const App = () => {
   const ans=useContext(UserDataContext)
@@ -32,7 +34,9 @@ const App = () => {
       <Route path='/user/logout' element={<UserProtectWrapper><UserLogout/></UserProtectWrapper>} />
       <Route path='/captain/logout' element={<CaptainProtectWrapper><CaptainLogut/></CaptainProtectWrapper>} />
       <Route path='/captain-home' element={<CaptainProtectWrapper><CaptainHome/></CaptainProtectWrapper>} /> 
+      <Route path='/captain-riding' element={<CaptainProtectWrapper><CaptainRiding/></CaptainProtectWrapper>} /> 
       <Route path='/ridding' element={<Ridding/>} />
+       
     </Routes>
     
     </>
